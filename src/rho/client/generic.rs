@@ -1,6 +1,9 @@
 use std::sync::Arc;
 use std::sync::RwLock;
 use std::sync::mpsc::Receiver;
+use event::InputEvent;
+use buffer::Buffer;
+use client::Client;
 
 pub struct GenericClient {
     reciever: Receiver,
