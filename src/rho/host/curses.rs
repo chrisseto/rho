@@ -1,7 +1,11 @@
-
 use ncurses::*;
 
+use std::sync::Arc;
+use std::sync::RwLock;
 use std::sync::mpsc::Sender;
+
+use host::Host;
+use buffer::Buffer;
 
 pub struct CursesHost {
     sender: Sender,

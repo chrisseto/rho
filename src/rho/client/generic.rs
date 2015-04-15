@@ -2,9 +2,11 @@ use std::sync::Arc;
 use std::sync::RwLock;
 use std::sync::mpsc::Receiver;
 
+use client::Client;
+
 pub struct GenericClient {
     reciever: Receiver,
-    buffers: Arc<RwLock<Vec<Buffer>>>
+    buffers: Arc<RwLock<Vec<Buffer>>>,
 }
 
 pub impl Client for GenericClient {
