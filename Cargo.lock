@@ -1,0 +1,26 @@
+[root]
+name = "rho"
+version = "0.0.1"
+dependencies = [
+ "ncurses 5.71.1 (git+https://github.com/jeaye/ncurses-rs)",
+ "pkg-config 0.3.3 (registry+https://github.com/rust-lang/crates.io-index)",
+]
+
+[[package]]
+name = "libc"
+version = "0.1.6"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+
+[[package]]
+name = "ncurses"
+version = "5.71.1"
+source = "git+https://github.com/jeaye/ncurses-rs#5f2dc7248624284177a03646a6ee88b4c78dc9a7"
+dependencies = [
+ "libc 0.1.6 (registry+https://github.com/rust-lang/crates.io-index)",
+]
+
+[[package]]
+name = "pkg-config"
+version = "0.3.3"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+

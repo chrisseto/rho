@@ -1,0 +1,22 @@
+[package]
+name = "rho"
+version = "0.0.1"
+authors = ["Chris Seto <chriskseto@gmail.com>"]
+
+links = "ncurses"
+build = "src/build.rs"
+
+[dependencies.ncurses]
+git = "https://github.com/jeaye/ncurses-rs"
+
+[build-dependencies]
+pkg-config = "0.3"
+
+[lib]
+name = "rho"
+path = "src/rho/lib.rs"
+
+[[bin]]
+name = "rho"
+test = false
+doc = false
