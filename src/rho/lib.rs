@@ -19,18 +19,19 @@ use event::InputEvent;
 use host::CursesHost;
 pub use client::GenericClient;
 
-pub struct Editor {
-    host: Host,
-    client: Client,
+pub struct Editor<'a, H: 'a + Host, C: 'a + Client> {
+    host: &'a H,
+    client: &'a C,
     buffers: Arc<RwLock<Vec<Buffer>>>,
 }
 
 
-pub impl Editor {
-    pub fn new() {
-        let buffers = RwLock::new(vec![Buffer::new()]);
+pub impl<'a> Editor<'a, CursesHost, GenericClient> {
+    pub fn new() -> Editor<'a, CursesHost, GenericClient> {
+        let buffers = Arc::new(RwLock::new(vec![Buffer::new()]));
         let (sender, recvr): (Sender<InputEvent>, Receiver<InputEvent>) = mpsc::channel();
-        let (host, client) = (CursesHost::new(buffers, sender), GenericClient::new(buffers,recvr));
+        let (host, client) = (CursesHost::new(buffers.clone(), sender), GenericClient::new(buffers.clone(), recvr));
+        Editor{host: &host, client: &client, buffers: buffers}
     }
 
     pub fn run(&self) {
