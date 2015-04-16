@@ -1,26 +1,26 @@
 use ncurses::*;
 
+use std::char;
 use std::sync::Arc;
 use std::sync::RwLock;
 use std::sync::mpsc::Sender;
-use std::sync::Arc;
-use std::sync::RwLock;
+
+use host::Host;
+use buffer::Buffer;
 use event::Modifier;
 use event::InputEvent;
 use client::generic::GenericClient;
-use buffer::Buffer;
-use host::Host;
 
-use host::Host;
-use buffer::Buffer;
 
 pub struct CursesHost {
-    sender: Sender,
+    sender: Sender<InputEvent>,
     buffers: Arc<RwLock<Vec<Buffer>>>,
 }
 
 pub impl Host for CursesHost {
-    fn new(buffers: Arc<RwLock<Vec<Buffer>>>, sender: Sender) {GenericClient{sender: sender, buffers: buffers}}
+    fn new(buffers: Arc<RwLock<Vec<Buffer>>>, sender: Sender<InputEvent>) -> Self {CursesHost{sender: sender, buffers: buffers}}
+
+    fn sender(&self) -> Sender<InputEvent> {self.sender}
 
     fn setup(&self) {
         initscr();
@@ -35,12 +35,12 @@ pub impl Host for CursesHost {
         endwin();
     }
 
-    fn poll(&self) {
+    fn poll(&self) -> InputEvent{
         refresh();
         let ch = getch();
         return InputEvent {
-            modifier: Modifier::NONE,
-            character: char::from_u32(getch() as u32).expect("Invalid character"),
+            modifier: Some(Modifier::NONE),
+            character: char::from_u32(getch() as u32),
         }
     }
 }
