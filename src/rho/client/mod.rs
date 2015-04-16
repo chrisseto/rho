@@ -1,16 +1,20 @@
 mod generic;
 
 use std::thread;
-use std::sync::mpsc;
+use std::sync::Arc;
+use std::sync::RwLock;
 use std::sync::mpsc::Receiver;
 
+use buffer::Buffer;
+use event::InputEvent;
 pub use self::generic::GenericClient;
 
-pub trait Client {
-    fn new(Receiver) -> Self;
 
-    fn handle_input(&self);
-    fn reciever(&self) -> Receiver;
+pub trait Client {
+    fn new(Arc<RwLock<Vec<Buffer>>>, Receiver<InputEvent>) -> Self;
+
+    fn handle_input(&self, InputEvent);
+    fn reciever(&self) -> Receiver<InputEvent>;
 
     fn listen(&self) {
         thread::spawn(|| {
@@ -20,6 +24,7 @@ pub trait Client {
                     Ok(event) => self.handle_input(event),
                 }
             }
-        })
+        });
+        return
     }
 }
